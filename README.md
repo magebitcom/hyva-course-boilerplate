@@ -24,6 +24,8 @@ No Magento code is committed here — you pull it with Composer (per the courses
 
 ## Setup
 
+**Quick start (after the prerequisites above):** `make build` runs the full pipeline — start the stack, `composer install`, install Magento (dev store), activate the Hyvä theme, build Tailwind, reindex. Then open the store. Run `make help` to see individual targets. The manual steps below are the same pipeline broken out.
+
 1. Branch off `master` as `feature/HC-<your-number>` and work there (never commit to `master`).
 2. Register the project with magebit-docker so Traefik serves `magebit-hyva-course.docker`. In your magebit-docker install, add it to `projects.yml`:
    ```yaml
