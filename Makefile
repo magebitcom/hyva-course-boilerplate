@@ -46,6 +46,9 @@ tailwind: ## Build the Hyvä default theme's Tailwind CSS (bootstrap styling)
 	d/docker-compose exec -T -w /opt/app/vendor/hyva-themes/magento2-default-theme/web/tailwind node sh -c "npm ci && npm run build"
 
 sampledata: ## Install Magento sample data (products, categories, CMS)
+	@# sampledata:deploy runs Composer with COMPOSER_HOME=var/composer_home, which
+	@# doesn't see your global auth — bridge the global auth.json into it.
+	d/docker-compose exec -T --user app php sh -c 'mkdir -p var/composer_home && cp "$$HOME/.composer/auth.json" var/composer_home/auth.json'
 	d/magento sampledata:deploy
 	d/magento setup:upgrade
 
