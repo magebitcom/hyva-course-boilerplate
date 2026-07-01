@@ -29,7 +29,7 @@ magento-install: ## Install Magento as a dev dummy store + developer mode
 	  --admin-firstname=Admin --admin-lastname=User --admin-email=admin@magebit.com \
 	  --admin-user=admin --admin-password=Admin123! \
 	  --language=en_US --currency=EUR --timezone=Europe/Riga --use-rewrites=1 \
-	  --search-engine=elasticsearch7 --elasticsearch-host=opensearch --elasticsearch-port=9200 \
+	  --search-engine=opensearch --opensearch-host=opensearch --opensearch-port=9200 \
 	  --amqp-host=rabbitmq --amqp-port=5672 --amqp-user=magento --amqp-password=magento \
 	  --cache-backend=redis --cache-backend-redis-server=redis \
 	  --session-save=redis --session-save-redis-host=redis \
