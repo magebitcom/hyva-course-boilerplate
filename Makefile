@@ -45,9 +45,13 @@ theme: ## Activate the Hyvä theme
 tailwind: ## Build the Hyvä default theme's Tailwind CSS (bootstrap styling)
 	d/docker-compose exec -T -w /opt/app/vendor/hyva-themes/magento2-default-theme/web/tailwind node sh -c "npm ci && npm run build"
 
+sampledata: ## Install Magento sample data (products, categories, CMS)
+	d/magento sampledata:deploy
+	d/magento setup:upgrade
+
 reindex: ## Reindex and flush cache
 	d/magento indexer:reindex
 	d/magento cache:flush
 
-build: up composer magento-install theme tailwind reindex ## Full pipeline: clone -> running store
+build: up composer magento-install sampledata theme tailwind reindex ## Full pipeline: clone -> running store
 	@echo "Done — open $(BASE_URL) (admin URI printed above by setup:install)"
