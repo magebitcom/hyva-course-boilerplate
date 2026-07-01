@@ -1,4 +1,4 @@
-# hyva-course-boilerplate
+# Hyva Course boilerplate
 
 A ready-to-run, **dockerized** Magento 2 + Hyvä setup for the **Hyvä Learning Module**. It comes pre-wired with the company-standard magebit-docker infrastructure (Traefik, ECR images) and the `d/` command wrappers, so you start on the same setup we use on real projects instead of a bare host.
 
