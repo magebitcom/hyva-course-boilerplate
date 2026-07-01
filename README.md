@@ -1,72 +1,80 @@
-# Hyva Course boilerplate
+# Hyvä Course Boilerplate
 
-A ready-to-run, **dockerized** Magento 2 + Hyvä setup for the **Hyvä Learning Module**. It comes pre-wired with the company-standard magebit-docker infrastructure (Traefik, ECR images) and the `d/` command wrappers, so you start on the same setup we use on real projects instead of a bare host.
+A ready-to-run, **dockerized** Magento 2 + Hyvä setup for the **Hyvä Learning Module**. It ships the company-standard magebit-docker infrastructure (Traefik, ECR images) and the `d/` command wrappers, so you start on the same setup we use on real projects instead of a bare host.
 
-No Magento code is committed here — you pull it with Composer (per the courses below). This repo only provides the Docker layer, the `d/` wrappers, and setup instructions.
-
----
-
-## Prerequisites
-
-1. **magebit-docker** installed on your machine, and this project added to its `projects.yml` + certificate generated.
-   → See Coda: **[Dockerize your first project](https://coda.io/d/_dvWq9UAfB3w/Dockerize-your-first-project_suenx3Fs)** (covers magebit-docker setup, AWS ECR login to pull images, `projects.yml`, `make certs`, and the `d/` commands).
-2. **AWS CLI** configured + ECR login (to pull the Docker images).
-3. **Composer credentials — set globally, never in this repo.** Configure them once on your machine; they live in your global `~/.composer/auth.json`, so no secret ever lands in the project:
-   ```bash
-   # Magento Marketplace keys
-   composer config --global --auth http-basic.repo.magento.com <public-key> <private-key>
-   # Free Hyvä access key (register at hyva.io — the Hyvä theme is free/open source)
-   composer config --global --auth http-basic.hyva-themes.repo.packagist.com token <hyva-access-key>
-   ```
-   The Hyvä package repository itself is added to the project's `composer.json` during install (see the *Installing Hyvä* course). Production/CI credentials are provided via env/secrets, never committed.
+No Magento code is committed — it's pulled with Composer from the committed `composer.json` / `composer.lock` (Magento 2.4.7-p3 + Hyvä default theme). This repo provides the Docker layer, the `d/` wrappers, the composer manifest, and a `make` pipeline.
 
 ---
 
-## Setup
+## Prerequisites (once per machine)
 
-**Quick start (after the prerequisites above):** `make build` runs the full pipeline — start the stack, `composer install`, install Magento (dev store), activate the Hyvä theme, build Tailwind, reindex. Then open the store. Run `make help` to see individual targets. The manual steps below are the same pipeline broken out.
-
-1. Branch off `master` as `feature/HC-<your-number>` and work there (never commit to `master`).
-2. Register the project with magebit-docker so Traefik serves `magebit-hyva-course.docker`. In your magebit-docker install, add it to `projects.yml`:
+1. **magebit-docker** installed, and this project registered so Traefik serves `magebit-hyva-course.docker`. In your magebit-docker install add it to `projects.yml`:
    ```yaml
    projects:
      - magebit-hyva-course
    ```
-   then generate the certificate (pick your OS):
+   then generate the cert: `make certs-linux` (or `certs-osx` / `certs-wsl`).
+   → New to this? See Coda: [Dockerize your first project](https://coda.io/d/_dvWq9UAfB3w/Dockerize-your-first-project_suenx3Fs).
+2. **AWS CLI** configured + ECR login (to pull the Docker images).
+3. **Composer credentials — set globally, never in this repo** (they live in `~/.composer/auth.json`):
    ```bash
-   make certs-linux   # or: make certs-osx / make certs-wsl
+   composer config --global --auth http-basic.repo.magento.com <public-key> <private-key>
+   composer config --global --auth http-basic.hyva-themes.repo.packagist.com token <hyva-access-key>
    ```
-3. Start the stack:
-   ```bash
-   d/docker-compose up -d
-   ```
-4. Install Magento and Hyvä **by following the Academy courses**, using the `d/` wrappers:
-   - **Installing Magento** — https://academy.magebit.com/course/view.php?id=159
-   - **Installing Hyvä** — https://academy.magebit.com/course/view.php?id=182
-   (composer install → `d/magento setup:upgrade` → build Tailwind → create your child theme → set it active).
-5. Point `d/node-tailwind` at your child theme (edit the `THEME_TAILWIND` line), then run the watcher:
-   ```bash
-   d/node-tailwind run watch
-   ```
-6. Open **https://magebit-hyva-course.docker**.
+   Get the keys from the person running the course (shared course Hyvä key + Magento keys). The Hyvä theme is free/open source; you still need the free access key.
 
 ---
 
-## Commands (`d/` wrappers)
+## Quick start
 
-Run everything through these — not the host:
+```bash
+make build
+```
+
+One command: start the stack → `composer install` → install Magento (dev store) → sample data → activate the Hyvä theme → build Tailwind → reindex. When it finishes, open **https://magebit-hyva-course.docker/** (the admin URL is printed by the installer). Run `make help` to see every target.
+
+Default admin login: `admin` / `Admin123!`.
+
+---
+
+## Working on the course
+
+Branch off `master` as `feature/HC-<your-number>` and work there — you'll open a PR from it for review. `master` is protected (PRs only).
+
+```bash
+git checkout -b feature/HC-123
+```
+
+New to branching / git flow? See Coda: [Git usage and deployments](https://coda.io/d/_dvWq9UAfB3w/Git-usage-and-deployments_suGsI5xv).
+
+When you create your own child theme, point `d/node-tailwind` at it (edit the `THEME_TAILWIND` line) and run the watcher while you work:
+```bash
+d/node-tailwind run watch
+```
+
+---
+
+## Commands
+
+**`d/` wrappers** (run everything through these, not the host):
 
 | Command | Purpose |
 |---|---|
-| `d/magento …` | `bin/magento` inside the PHP container |
+| `d/magento …` | `bin/magento` in the PHP container |
 | `d/composer …` | Composer |
 | `d/npm …` / `d/node …` | npm / node |
 | `d/node-tailwind run watch\|build` | Tailwind build in your child theme |
 | `d/mysql` | MySQL shell |
 | `d/phpcs` / `d/phpstan` | code standards (set up per project) |
 
+**`make` targets:** `build` (full pipeline), `up`, `down`, `composer`, `magento-install`, `sampledata`, `theme`, `tailwind`, `reindex`.
+
 ---
 
-## About this course
+## Notes
 
-Part of the **Hyvä Learning Module**. Each candidate works on their own `feature/HC-<number>` branch and opens a PR for review. `master` is protected — PRs only.
+- Runs in **developer mode** — no static-content deploy needed.
+- **Varnish** is the full-page cache. `d/magento cache:flush` purges it (http_cache_hosts is set on install), so template changes show without restarting Varnish. Tailwind changes need the watcher (`d/node-tailwind run watch`).
+- **Search** uses OpenSearch (the `opensearch` engine — correct for OpenSearch 2.x).
+- Sample data has **no sales orders** — for the My Account order-grid task, place a couple of test orders via checkout.
+- Production/CI credentials are provided via env/secrets, never committed.
