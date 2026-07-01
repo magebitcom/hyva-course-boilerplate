@@ -24,10 +24,10 @@ services:
   varnish:
     labels:
       - traefik.enable=true
-      - traefik.http.routers.hyva-course.tls=true
-      - traefik.http.routers.hyva-course.entrypoints=https
-      - traefik.http.routers.hyva-course.rule=Host(`hyva-course.docker`)
-      - traefik.http.services.hyva-course.loadbalancer.server.port=80
+      - traefik.http.routers.magebit-hyva-course.tls=true
+      - traefik.http.routers.magebit-hyva-course.entrypoints=https
+      - traefik.http.routers.magebit-hyva-course.rule=Host(`magebit-hyva-course.docker`)
+      - traefik.http.services.magebit-hyva-course.loadbalancer.server.port=80
     networks:
       - magebit
 
@@ -35,25 +35,25 @@ services:
     networks:
       magebit:
         aliases:
-          - db.hyva-course.docker
+          - db.magebit-hyva-course.docker
 
   redis:
     networks:
       magebit:
         aliases:
-          - redis.hyva-course.docker
+          - redis.magebit-hyva-course.docker
 
   opensearch:
     labels:
       - traefik.enable=true
-      - traefik.http.routers.hyva-course-es.tls=true
-      - traefik.http.routers.hyva-course-es.entrypoints=https
-      - traefik.http.routers.hyva-course-es.rule=Host(`es.hyva-course.docker`)
-      - traefik.http.services.hyva-course-es.loadbalancer.server.port=9200
+      - traefik.http.routers.magebit-hyva-course-es.tls=true
+      - traefik.http.routers.magebit-hyva-course-es.entrypoints=https
+      - traefik.http.routers.magebit-hyva-course-es.rule=Host(`es.magebit-hyva-course.docker`)
+      - traefik.http.services.magebit-hyva-course-es.loadbalancer.server.port=9200
     networks:
       magebit:
         aliases:
-          - es.hyva-course.docker
+          - es.magebit-hyva-course.docker
 
   node:
     networks:
@@ -63,7 +63,7 @@ services:
     networks:
       magebit:
         aliases:
-          - rabbitmq.hyva-course.docker
+          - rabbitmq.magebit-hyva-course.docker
 
 networks:
   magebit:

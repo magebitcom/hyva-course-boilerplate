@@ -1,6 +1,6 @@
 services:
   php:
-    container_name: hyva-course-php
+    container_name: magebit-hyva-course-php
     image: 369129824209.dkr.ecr.eu-west-1.amazonaws.com/magebit-docker:php-8.3-fpm
     volumes:
       - ./.:/var/www/html
@@ -14,10 +14,10 @@ services:
       - rabbitmq
 
   xdebug:
-    container_name: hyva-course-php-xdebug
+    container_name: magebit-hyva-course-php-xdebug
     image: 369129824209.dkr.ecr.eu-west-1.amazonaws.com/magebit-docker:php-8.3-fpm-xdebug
     environment:
-      - PHP_IDE_CONFIG=serverName=hyva-course.docker
+      - PHP_IDE_CONFIG=serverName=magebit-hyva-course.docker
     volumes:
       - ./.:/var/www/html
       - sock_data:/sock
@@ -27,7 +27,7 @@ services:
       - opensearch
       - rabbitmq
   nginx:
-    container_name: hyva-course-nginx
+    container_name: magebit-hyva-course-nginx
     image: 369129824209.dkr.ecr.eu-west-1.amazonaws.com/magebit-docker:nginx-1.24
     volumes:
       - ./.:/var/www/html:ro
@@ -37,7 +37,7 @@ services:
       - xdebug
 
   db:
-    container_name: hyva-course-mysql
+    container_name: magebit-hyva-course-mysql
     image: mariadb:10.6
     environment:
       - MYSQL_USER=magento
@@ -50,10 +50,10 @@ services:
     networks:
       default:
         aliases:
-          - db.hyva-course.docker
+          - db.magebit-hyva-course.docker
 
   varnish:
-    container_name: hyva-course-varnish
+    container_name: magebit-hyva-course-varnish
     image: varnish:7.5
     command: "-p http_resp_hdr_len=16k -p http_resp_size=64k -p workspace_client=1M -p workspace_backend=1M -p vsl_reclen=4084"
     volumes:
@@ -62,17 +62,17 @@ services:
       - nginx
 
   redis:
-    container_name: hyva-course-redis
+    container_name: magebit-hyva-course-redis
     image: redis:7.2-alpine
     volumes:
       - redis_data:/data
     networks:
       default:
         aliases:
-          - redis.hyva-course.docker
+          - redis.magebit-hyva-course.docker
 
   opensearch:
-    container_name: hyva-course-opensearch
+    container_name: magebit-hyva-course-opensearch
     image: 369129824209.dkr.ecr.eu-west-1.amazonaws.com/magebit-docker:opensearch-2.12.0
     environment:
       - discovery.type=single-node
@@ -83,10 +83,10 @@ services:
     networks:
       default:
         aliases:
-          - es.hyva-course.docker
+          - es.magebit-hyva-course.docker
 
   node:
-    container_name: hyva-course-node
+    container_name: magebit-hyva-course-node
     image: node:20
     tty: true
     command: tail -F anything
@@ -105,7 +105,7 @@ services:
     networks:
       default:
         aliases:
-          - rabbitmq.hyva-course.docker
+          - rabbitmq.magebit-hyva-course.docker
     ports:
       - "15672:15672"  # Management UI port
       - "5672:5672"    # AMQP port

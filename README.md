@@ -36,7 +36,7 @@ No Magento code is committed here — you pull it with Composer (per the courses
    ```bash
    d/node-tailwind run watch
    ```
-6. Open **https://hyva-course.docker**.
+6. Open **https://magebit-hyva-course.docker**.
 
 ---
 
