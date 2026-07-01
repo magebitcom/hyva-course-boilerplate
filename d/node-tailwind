@@ -1,0 +1,12 @@
+#!/bin/bash
+
+# Point this at YOUR child theme's web/tailwind directory (created during the course).
+# Example: app/design/frontend/Magebit/mytheme/web/tailwind
+THEME_TAILWIND="app/design/frontend/Vendor/theme/web/tailwind"
+
+# If no arguments, just log into shell in the theme's tailwind dir
+if [ $# -eq 0 ]; then
+    d/docker-compose exec -w "/opt/app/${THEME_TAILWIND}" node /bin/bash
+else
+    d/docker-compose exec -T -w "/opt/app/${THEME_TAILWIND}" node "$@"
+fi

@@ -1,0 +1,118 @@
+services:
+  php:
+    container_name: magebit-hyva-course-php
+    image: 369129824209.dkr.ecr.eu-west-1.amazonaws.com/magebit-docker:php-8.3-fpm
+    volumes:
+      - ./.:/var/www/html
+      - sock_data:/sock
+    environment:
+      - COMPOSER_VERSION=2.7.9
+    depends_on:
+      - db
+      - redis
+      - opensearch
+      - rabbitmq
+
+  xdebug:
+    container_name: magebit-hyva-course-php-xdebug
+    image: 369129824209.dkr.ecr.eu-west-1.amazonaws.com/magebit-docker:php-8.3-fpm-xdebug
+    environment:
+      - PHP_IDE_CONFIG=serverName=magebit-hyva-course.docker
+    volumes:
+      - ./.:/var/www/html
+      - sock_data:/sock
+    depends_on:
+      - db
+      - redis
+      - opensearch
+      - rabbitmq
+  nginx:
+    container_name: magebit-hyva-course-nginx
+    image: 369129824209.dkr.ecr.eu-west-1.amazonaws.com/magebit-docker:nginx-1.24
+    volumes:
+      - ./.:/var/www/html:ro
+      - sock_data:/sock
+    depends_on:
+      - php
+      - xdebug
+
+  db:
+    container_name: magebit-hyva-course-mysql
+    image: mariadb:10.6
+    environment:
+      - MYSQL_USER=magento
+      - MYSQL_PASSWORD=magento
+      - MYSQL_DATABASE=magento
+      - MYSQL_ROOT_PASSWORD=magento
+    volumes:
+      - ./.docker/mysql/docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d/
+      - db_data:/var/lib/mysql
+    networks:
+      default:
+        aliases:
+          - db.magebit-hyva-course.docker
+
+  varnish:
+    container_name: magebit-hyva-course-varnish
+    image: varnish:7.5
+    command: "-p http_resp_hdr_len=16k -p http_resp_size=64k -p workspace_client=1M -p workspace_backend=1M -p vsl_reclen=4084"
+    volumes:
+      - ./.docker/varnish/default.vcl:/etc/varnish/default.vcl
+    depends_on:
+      - nginx
+
+  redis:
+    container_name: magebit-hyva-course-redis
+    image: redis:7.2-alpine
+    volumes:
+      - redis_data:/data
+    networks:
+      default:
+        aliases:
+          - redis.magebit-hyva-course.docker
+
+  opensearch:
+    container_name: magebit-hyva-course-opensearch
+    image: 369129824209.dkr.ecr.eu-west-1.amazonaws.com/magebit-docker:opensearch-2.12.0
+    environment:
+      - discovery.type=single-node
+      - plugins.security.disabled=true
+      - "OPENSEARCH_INITIAL_ADMIN_PASSWORD=HPCLtejD0bqBHW8e6jnl"
+    volumes:
+      - opensearch_data:/usr/share/opensearch/data
+    networks:
+      default:
+        aliases:
+          - es.magebit-hyva-course.docker
+
+  node:
+    container_name: magebit-hyva-course-node
+    image: node:20
+    tty: true
+    command: tail -F anything
+    working_dir: /opt/app
+    volumes:
+      - ./.:/opt/app
+    user: 1000:1000
+
+  rabbitmq:
+    image: rabbitmq:management
+    environment:
+      - RABBITMQ_DEFAULT_USER=magento
+      - RABBITMQ_DEFAULT_PASS=magento
+    volumes:
+      - rabbitmq_data:/var/lib/rabbitmq
+    networks:
+      default:
+        aliases:
+          - rabbitmq.magebit-hyva-course.docker
+    ports:
+      - "15672:15672"  # Management UI port
+      - "5672:5672"    # AMQP port
+
+volumes:
+  sock_data:
+  db_data:
+  redis_data:
+  opensearch_data:
+  rabbitmq_data: {}

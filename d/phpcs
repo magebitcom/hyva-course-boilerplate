@@ -1,0 +1,3 @@
+#!/bin/bash
+
+d/docker-compose exec --user app -it php vendor/bin/phpcs $@ 2>&1 | grep -Pv "level=warning msg="

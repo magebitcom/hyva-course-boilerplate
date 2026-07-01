@@ -1,0 +1,70 @@
+services:
+  php:
+    env_file:
+      - ./.docker/.env.local
+    volumes:
+      - ~/.composer:/var/www/.composer
+    networks:
+      - magebit
+
+  xdebug:
+    env_file:
+      - ./.docker/.env.local
+    volumes:
+      - ~/.composer:/var/www/.composer
+    networks:
+      - magebit
+
+  nginx:
+    env_file:
+      - ./.docker/.env.local
+    networks:
+      - magebit
+
+  varnish:
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.magebit-hyva-course.tls=true
+      - traefik.http.routers.magebit-hyva-course.entrypoints=https
+      - traefik.http.routers.magebit-hyva-course.rule=Host(`magebit-hyva-course.docker`)
+      - traefik.http.services.magebit-hyva-course.loadbalancer.server.port=80
+    networks:
+      - magebit
+
+  db:
+    networks:
+      magebit:
+        aliases:
+          - db.magebit-hyva-course.docker
+
+  redis:
+    networks:
+      magebit:
+        aliases:
+          - redis.magebit-hyva-course.docker
+
+  opensearch:
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.magebit-hyva-course-es.tls=true
+      - traefik.http.routers.magebit-hyva-course-es.entrypoints=https
+      - traefik.http.routers.magebit-hyva-course-es.rule=Host(`es.magebit-hyva-course.docker`)
+      - traefik.http.services.magebit-hyva-course-es.loadbalancer.server.port=9200
+    networks:
+      magebit:
+        aliases:
+          - es.magebit-hyva-course.docker
+
+  node:
+    networks:
+      - magebit
+
+  rabbitmq:
+    networks:
+      magebit:
+        aliases:
+          - rabbitmq.magebit-hyva-course.docker
+
+networks:
+  magebit:
+    external: true

@@ -1,0 +1,8 @@
+#!/bin/bash
+
+# If no arguments, just log into shell
+if [ $# -eq 0 ]; then
+    d/docker-compose exec node /bin/bash
+else
+    d/docker-compose exec -T node "$@"
+fi
