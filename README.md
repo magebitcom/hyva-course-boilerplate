@@ -22,7 +22,7 @@ No Magento code is committed here — you pull it with Composer (per the courses
 
 ## Setup
 
-1. Branch off `main` as `feature/HC-<your-number>` and work there (never commit to `main`).
+1. Branch off `master` as `feature/HC-<your-number>` and work there (never commit to `master`).
 2. Add `hyva-course` to magebit-docker `projects.yml` and generate the cert (see the Coda guide above).
 3. Start the stack:
    ```bash
@@ -57,4 +57,4 @@ Run everything through these — not the host:
 
 ## About this course
 
-Part of the **Hyvä Learning Module**. Each candidate works on their own `feature/HC-<number>` branch and opens a PR for review. `main` is protected — PRs only.
+Part of the **Hyvä Learning Module**. Each candidate works on their own `feature/HC-<number>` branch and opens a PR for review. `master` is protected — PRs only.
