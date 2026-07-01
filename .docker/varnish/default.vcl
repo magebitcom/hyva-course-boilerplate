@@ -7,7 +7,7 @@ import std;
 # For SSL offloading, pass the following header in your proxy server or load balancer: 'HTTP-X-FORWARDED-PROTO: https'
 
 backend default {
-    .host = "nginx";
+    .host = "magebit-hyva-course-nginx";
     .port = "8080";
     .first_byte_timeout = 600s;
     .probe = {
