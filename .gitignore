@@ -38,7 +38,7 @@ atlassian*
 /vendor_orig
 !/vendor/magento/framework/Mail/Template/TransportBuilder.php
 /generated
-/auth.json.sample
+/auth.json
 /package.json.sample
 
 /app/etc/env.php

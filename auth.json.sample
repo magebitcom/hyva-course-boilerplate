@@ -1,8 +1,8 @@
 {
     "http-basic": {
         "repo.magento.com": {
-            "username": "de153fabb56168b2ceabdda51794c4c2",
-            "password": "ba454d0585a6e6ed47b761905e083db7"
+            "username": "<magento-public-key>",
+            "password": "<magento-private-key>"
         },
         "hyva-themes.repo.packagist.com": {
             "username": "token",
