@@ -25,7 +25,15 @@ No Magento code is committed here — you pull it with Composer (per the courses
 ## Setup
 
 1. Branch off `master` as `feature/HC-<your-number>` and work there (never commit to `master`).
-2. Add `magebit-hyva-course` to magebit-docker `projects.yml` and generate the cert (see the Coda guide above).
+2. Register the project with magebit-docker so Traefik serves `magebit-hyva-course.docker`. In your magebit-docker install, add it to `projects.yml`:
+   ```yaml
+   projects:
+     - magebit-hyva-course
+   ```
+   then generate the certificate (pick your OS):
+   ```bash
+   make certs-linux   # or: make certs-osx / make certs-wsl
+   ```
 3. Start the stack:
    ```bash
    d/docker-compose up -d
