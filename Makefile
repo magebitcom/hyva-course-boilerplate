@@ -34,6 +34,7 @@ magento-install: ## Install Magento as a dev dummy store + developer mode
 	  --cache-backend=redis --cache-backend-redis-server=redis \
 	  --session-save=redis --session-save-redis-host=redis \
 	  --no-interaction
+	d/magento setup:config:set --http-cache-hosts=magebit-hyva-course-varnish:80 -n
 	d/magento deploy:mode:set developer
 
 theme: ## Activate the Hyvä theme
