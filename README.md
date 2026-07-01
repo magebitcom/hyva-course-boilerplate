@@ -11,19 +11,21 @@ No Magento code is committed here — you pull it with Composer (per the courses
 1. **magebit-docker** installed on your machine, and this project added to its `projects.yml` + certificate generated.
    → See Coda: **[Dockerize your first project](https://coda.io/d/_dvWq9UAfB3w/Dockerize-your-first-project_suenx3Fs)** (covers magebit-docker setup, AWS ECR login to pull images, `projects.yml`, `make certs`, and the `d/` commands).
 2. **AWS CLI** configured + ECR login (to pull the Docker images).
-3. **auth.json** with your keys — copy the sample and fill it in:
+3. **Composer credentials — set globally, never in this repo.** Configure them once on your machine; they live in your global `~/.composer/auth.json`, so no secret ever lands in the project:
    ```bash
-   cp auth.json.sample auth.json
+   # Magento Marketplace keys
+   composer config --global --auth http-basic.repo.magento.com <public-key> <private-key>
+   # Free Hyvä access key (register at hyva.io — the Hyvä theme is free/open source)
+   composer config --global --auth http-basic.hyva-themes.repo.packagist.com token <hyva-access-key>
    ```
-   - `repo.magento.com` — your Magento Marketplace public/private keys.
-   - `hyva-themes.repo.packagist.com` — your **free** Hyvä access key (register at hyva.io; the Hyvä theme is free/open source).
+   The Hyvä package repository itself is added to the project's `composer.json` during install (see the *Installing Hyvä* course). Production/CI credentials are provided via env/secrets, never committed.
 
 ---
 
 ## Setup
 
 1. Branch off `master` as `feature/HC-<your-number>` and work there (never commit to `master`).
-2. Add `hyva-course` to magebit-docker `projects.yml` and generate the cert (see the Coda guide above).
+2. Add `magebit-hyva-course` to magebit-docker `projects.yml` and generate the cert (see the Coda guide above).
 3. Start the stack:
    ```bash
    d/docker-compose up -d
