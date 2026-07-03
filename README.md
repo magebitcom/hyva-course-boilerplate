@@ -21,7 +21,7 @@ No Magento code is committed — it's pulled with Composer from the committed `c
    composer config --global --auth http-basic.repo.magento.com <public-key> <private-key>
    composer config --global --auth http-basic.hyva-themes.repo.packagist.com token <hyva-access-key>
    ```
-   Get the keys from the person running the course (shared course Hyvä key + Magento keys). The Hyvä theme is free/open source; you still need the free access key.
+   Register your own free keys — a Magento Marketplace account for the Magento keys, and a Hyvä Portal (hyva.io) account for the Hyvä access key. The Hyvä theme is free/open source, so there's no shared/paid license — each person uses their own free keys.
 
 ---
 
@@ -39,11 +39,12 @@ Default admin login: `admin` / `Admin123!`.
 
 ## Working on the course
 
-Branch off `master` as `feature/HC-<your-number>` and work there — you'll open a PR from it for review. `master` is protected (PRs only).
-
-```bash
-git checkout -b feature/HC-123
-```
+First switch to your own private repo (so nobody can see anyone else's work), then branch and build there — the same flow as the FAQ task:
+ git remote remove origin
+ git remote add origin <your-private-repo-url>
+ git push
+ git checkout -b feature/hyva-course
+Don't commit or open PRs against this boilerplate repo. Open your PR from your private repo and share it with your reviewer.
 
 New to branching / git flow? See Coda: [Git usage and deployments](https://coda.io/d/_dvWq9UAfB3w/Git-usage-and-deployments_suGsI5xv).
 
