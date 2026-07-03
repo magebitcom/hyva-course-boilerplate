@@ -40,10 +40,10 @@ Default admin login: `admin` / `Admin123!`.
 ## Working on the course
 
 First switch to your own private repo (so nobody can see anyone else's work), then branch and build there — the same flow as the FAQ task:
- git remote remove origin
- git remote add origin <your-private-repo-url>
- git push
- git checkout -b feature/hyva-course
+ `git remote remove origin`
+ `git remote add origin <your-private-repo-url>`
+ `git push`
+ `git checkout -b feature/hyva-course`
 Don't commit or open PRs against this boilerplate repo. Open your PR from your private repo and share it with your reviewer.
 
 New to branching / git flow? See Coda: [Git usage and deployments](https://coda.io/d/_dvWq9UAfB3w/Git-usage-and-deployments_suGsI5xv).
