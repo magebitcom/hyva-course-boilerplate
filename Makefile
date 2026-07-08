@@ -19,8 +19,13 @@ up: ## Start the docker stack
 down: ## Stop the stack (keep volumes)
 	d/docker-compose down
 
-composer: ## Install PHP dependencies (Magento + Hyvä) from the committed lock
+composer: ## Install PHP deps from the committed lock. Own-key users: make composer HYVA_SLUG=your-slug
+ifdef HYVA_SLUG
+	d/composer config repositories.private-packagist composer https://hyva-themes.repo.packagist.com/$(HYVA_SLUG)/
+	d/composer update "hyva-themes/*" --with-dependencies
+else
 	d/composer install
+endif
 
 magento-install: ## Install Magento as a dev dummy store + developer mode
 	d/magento setup:install \
