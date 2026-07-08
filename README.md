@@ -23,6 +23,12 @@ No Magento code is committed — it's pulled with Composer from the committed `c
    ```
    Register your own free keys — a Magento Marketplace account for the Magento keys, and a Hyvä Portal (hyva.io) account for the Hyvä access key. The Hyvä theme is free/open source, so there's no shared/paid license — each person uses their own free keys.
 
+   > **Hyvä access is scoped to your own account.** The repo URL in [`composer.json`](composer.json) points at one Private Packagist account slug (`.../magebit-hyva-c-sf2zg/`). Your key only authenticates against *your* slug, so with your own key that URL returns `HTTP 401`. Point the repo at your slug too (find it in the hyva.io Composer setup instructions — it's the path segment in your URL):
+   > ```bash
+   > composer config repositories.private-packagist composer https://hyva-themes.repo.packagist.com/<your-slug>/
+   > ```
+   > This is a **local-only** change — don't commit it; the committed URL stays as the course default.
+
 ---
 
 ## Quick start
