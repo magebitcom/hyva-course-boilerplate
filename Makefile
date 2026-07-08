@@ -30,7 +30,7 @@ endif
 magento-install: ## Install Magento as a dev dummy store + developer mode
 	d/magento setup:install \
 	  --base-url=$(BASE_URL) \
-	  --db-host=db --db-name=magento --db-user=magento --db-password=magento \
+	  --db-host=magebit-hyva-course-mysql --db-name=magento --db-user=magento --db-password=magento \
 	  --admin-firstname=Admin --admin-lastname=User --admin-email=admin@magebit.com \
 	  --admin-user=admin --admin-password=Admin123! \
 	  --language=en_US --currency=EUR --timezone=Europe/Riga --use-rewrites=1 \
